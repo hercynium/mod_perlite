@@ -334,7 +334,7 @@ static apr_status_t perlite_hook_term(void *data)
 
 static int perlite_hook_init(apr_pool_t *pconf, apr_pool_t *plog, apr_pool_t *ptemp, server_rec *s)
 {
-    PERL_SYS_INIT3(&perlite_argc, &perlite_argv, &perlite_env);
+    PERL_SYS_INIT3(&perlite_argc, (char***)&perlite_argv, &perlite_env);
     apr_pool_create(&server_pool, pconf);
     apr_pool_cleanup_register(server_pool, NULL, perlite_hook_term, apr_pool_cleanup_null);
     return OK;
