@@ -94,6 +94,7 @@ $class->new(
         't/conf/apache_test_config.pm',
         't/conf/extra.conf',
         't/conf/httpd.conf',
+        't/conf/mime.types',
         't/htdocs/index.html',
         't/logs',
     ],
