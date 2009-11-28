@@ -12,7 +12,7 @@ sub ACTION_code {
     my $apxs = $self->args('apxs');
     unless ($apxs) {
         use File::Which qw(which);
-        my @apxs = which 'apxs';
+        my @apxs = which('apxs2'), which('apxs');
         unless (@apxs) {
             die <<'NOAPXS';
 The apxs binary needed for extending the Apache webserver could not be found in
