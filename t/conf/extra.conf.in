@@ -1,2 +1,3 @@
-LoadModule perlite_module modules/mod_perlite.so
+LoadModule perlite_module ../mod_perlite.so
 AddType application/x-httpd-perlite .perlite
+PerliteLibPath /home/sscaffidi/code/advent_2009/mod_perlite/blib/lib

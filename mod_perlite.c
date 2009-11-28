@@ -246,6 +246,14 @@ static int perlite_handler(request_rec *r)
     newXSproto("Perlite::_log", XS_Perlite__log, __FILE__, "$$");
     newXSproto("Perlite::_exit", XS_Perlite__exit, __FILE__, "");
 
+    LOG(DEBUG, "PerliteLibPath = [%s]", config->libpath); // DEBUG
+
+    /* TODO: turn libpath into an array of char* and push each val on to INC */
+    char *path = config->libpath;
+    AV *inc_av = get_av("INC", 0);
+    av_unshift(inc_av, 1);
+    av_store((AV *)inc_av, 0, newSVpv(path, 0));
+
     require_pv("Perlite.pm");
     if (SvTRUE(ERRSV)) {
         LOG(ERR, "Please make sure that you have Perlite.pm installed in one of the INC locations that follow:"
@@ -344,7 +352,7 @@ static void *create_perlite_config(apr_pool_t *p, server_rec *s)
 
     config = (perlite_config *) apr_pcalloc(p, sizeof(perlite_config));
     config->sysprotect = 0;
-
+    config->libpath = ".";
     return (void *)config;
 }
 
@@ -358,9 +366,22 @@ static const char *set_perlite_sysprotect(cmd_parms *parms, void *mconfig, int f
     return NULL;
 }
 
+static const char *set_perlite_libpath(cmd_parms *parms, void *mconfig, const char *path)
+{
+    perlite_config *config;
+
+    config = ap_get_module_config(parms->server->module_config, &perlite_module);
+    config->libpath = (char *) path;
+    /* TODO: add code to split path on : and save each piece to an array */
+    return NULL;
+}
+
+
 static const command_rec perlite_command_table[] = {
     AP_INIT_FLAG(    "PerliteSysProtect",   set_perlite_sysprotect,  NULL, OR_FILEINFO,
                      "On or Off to enable or disable Sys::Protect"),
+    AP_INIT_TAKE1(   "PerliteLibPath",      set_perlite_libpath,     NULL, OR_FILEINFO,
+                     "Sets a path in which to find Perl libraries"),
     { NULL }
 };
 

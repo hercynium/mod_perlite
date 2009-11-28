@@ -28,6 +28,7 @@
 
 typedef struct {
   int sysprotect; /* require Sys::Protect before calling user code. */
+  char *libpath;  /* prepend this to perl's default library search path */
 } perlite_config;
 
 #endif
