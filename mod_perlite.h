@@ -27,8 +27,9 @@
 #define PERLITE_SCRIPT "perlite-script"
 
 typedef struct {
-  int sysprotect; /* require Sys::Protect before calling user code. */
-  char *libpath;  /* prepend this to perl's default library search path */
+  int sysprotect;      /* require Sys::Protect before calling user code. */
+  char *libpath[256];  /* will point to an array of malloc'd strings */
+  int libpath_len;     /* number of elements in *libpath */
 } perlite_config;
 
 #endif
