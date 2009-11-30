@@ -1,3 +1,6 @@
 LoadModule perlite_module ../mod_perlite.so
 AddType application/x-httpd-perlite .perlite
-PerliteLibPath /home/sscaffidi/code/advent_2009/mod_perlite/blib/lib
+
+# PerliteUseLib can be specified multiple times
+# Also, see docs for Apache::TestConfig for info on @foo@ substitutions
+PerliteUseLib @top_dir@/blib/lib
